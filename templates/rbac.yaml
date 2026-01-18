@@ -1,0 +1,51 @@
+{{- if .Values.operator.rbac.create }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "ocellusai.fullname" . }}-operator
+rules:
+# Права на работу с кастомными ресурсами
+- apiGroups: ["ocellusai.com"]
+  resources: ["ocellusai"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["ocellusai.com"]
+  resources: ["ocellusai/status"]
+  verbs: ["get", "update", "patch"]
+# Права на работу с CronJob'ами и Job'ами
+- apiGroups: ["batch"]
+  resources: ["cronjobs"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Права на работу с Deployment'ами
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Права на работу с Service'ами
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+# Права на чтение событий и подов для мониторинга
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["get", "list", "watch", "create"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "ocellusai.fullname" . }}-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "ocellusai.fullname" . }}-operator
+subjects:
+- kind: ServiceAccount
+  name: {{ include "ocellusai.serviceAccountName" . }}
+  namespace: {{ include "ocellusai.namespace" . }}
+{{- end }}

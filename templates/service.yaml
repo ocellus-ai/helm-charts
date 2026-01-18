@@ -1,0 +1,26 @@
+{{- if .Values.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ocellusai.fullname" . }}
+  namespace: {{ include "ocellusai.namespace" . }}
+  labels:
+    app: {{ include "ocellusai.fullname" . }}-service
+spec:
+  type: {{ .Values.service.k8sService.type }}
+  selector:
+    app: {{ include "ocellusai.fullname" . }}-service
+  ports:
+  - name: http
+    port: {{ .Values.service.k8sService.port }}
+    targetPort: {{ .Values.service.k8sService.targetPort }}
+    protocol: TCP
+  {{- if .Values.service.k8sService.sessionAffinity }}
+  sessionAffinity: {{ .Values.service.k8sService.sessionAffinity }}
+  {{- if .Values.service.k8sService.sessionAffinityTimeout }}
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: {{ .Values.service.k8sService.sessionAffinityTimeout }}
+  {{- end }}
+  {{- end }}
+{{- end }}

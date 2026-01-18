@@ -1,0 +1,212 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: ocellusai.ocellusai.com
+spec:
+  group: ocellusai.com
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              type:
+                type: string
+                description: "Тип ресурса (cronjob или deployment)"
+                enum: ["cronjob", "deployment"]
+                default: "cronjob"
+              image:
+                type: string
+                description: "Docker образ для OcellusAI сервиса"
+                default: "nexus.dmp.tele2.kz/mlops-images/python-mlops-etl:v1.0.0"
+              replicas:
+                type: integer
+                description: "Количество реплик для Deployment"
+                minimum: 0
+                maximum: 10
+                default: 1
+              port:
+                type: integer
+                description: "Порт контейнера для Deployment"
+                minimum: 1
+                maximum: 65535
+                default: 8080
+              schedule:
+                type: string
+                description: "Cron расписание (например: '0 */6 * * *')"
+                default: "0 */6 * * *"
+              suspend:
+                type: boolean
+                description: "Приостановить выполнение CronJob"
+                default: false
+              concurrencyPolicy:
+                type: string
+                description: "Политика конкурентности (Allow, Forbid, Replace)"
+                enum: ["Allow", "Forbid", "Replace"]
+                default: "Forbid"
+              successfulJobsHistoryLimit:
+                type: integer
+                description: "Количество успешных Job'ов для хранения в истории"
+                minimum: 0
+                maximum: 10
+                default: 3
+              failedJobsHistoryLimit:
+                type: integer
+                description: "Количество неудачных Job'ов для хранения в истории"
+                minimum: 0
+                maximum: 10
+                default: 1
+              backoffLimit:
+                type: integer
+                description: "Количество попыток при ошибке"
+                minimum: 0
+                maximum: 10
+                default: 3
+              ttlSecondsAfterFinished:
+                type: integer
+                description: "Время до удаления Job после завершения (секунды)"
+                minimum: 0
+                default: 3600
+              env:
+                type: array
+                description: "Переменные окружения для контейнера"
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: "Имя переменной окружения"
+                    value:
+                      type: string
+                      description: "Значение переменной окружения (используется для простых значений)"
+                    valueFrom:
+                      type: object
+                      description: "Источник значения переменной окружения"
+                      properties:
+                        secretKeyRef:
+                          type: object
+                          description: "Ссылка на ключ в Secret"
+                          properties:
+                            name:
+                              type: string
+                              description: "Имя Secret"
+                            key:
+                              type: string
+                              description: "Ключ в Secret"
+                          required:
+                          - name
+                          - key
+                        configMapKeyRef:
+                          type: object
+                          description: "Ссылка на ключ в ConfigMap"
+                          properties:
+                            name:
+                              type: string
+                              description: "Имя ConfigMap"
+                            key:
+                              type: string
+                              description: "Ключ в ConfigMap"
+                          required:
+                          - name
+                          - key
+                  required:
+                  - name
+              envFrom:
+                type: array
+                description: "Импорт всех переменных из Secret или ConfigMap"
+                items:
+                  type: object
+                  properties:
+                    secretRef:
+                      type: object
+                      description: "Импорт всех переменных из Secret"
+                      properties:
+                        name:
+                          type: string
+                          description: "Имя Secret"
+                      required:
+                      - name
+                    configMapRef:
+                      type: object
+                      description: "Импорт всех переменных из ConfigMap"
+                      properties:
+                        name:
+                          type: string
+                          description: "Имя ConfigMap"
+                      required:
+                      - name
+              resources:
+                type: object
+                description: "Ресурсы для контейнера"
+                properties:
+                  requests:
+                    type: object
+                    properties:
+                      cpu:
+                        type: string
+                        default: "100m"
+                      memory:
+                        type: string
+                        default: "256Mi"
+                  limits:
+                    type: object
+                    properties:
+                      cpu:
+                        type: string
+                        default: "500m"
+                      memory:
+                        type: string
+                        default: "512Mi"
+                default:
+                  requests:
+                    cpu: "100m"
+                    memory: "256Mi"
+                  limits:
+                    cpu: "500m"
+                    memory: "512Mi"
+              nodeSelector:
+                type: object
+                description: "Селектор нод для размещения Pod'ов"
+                additionalProperties:
+                  type: string
+              tolerations:
+                type: array
+                description: "Tolerations для размещения на нодах с taints"
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      description: "Ключ taint"
+                    operator:
+                      type: string
+                      description: "Оператор сравнения (Equal, Exists)"
+                      enum: ["Equal", "Exists"]
+                    value:
+                      type: string
+                      description: "Значение taint"
+                    effect:
+                      type: string
+                      description: "Эффект taint (NoSchedule, PreferNoSchedule, NoExecute)"
+                      enum: ["NoSchedule", "PreferNoSchedule", "NoExecute"]
+                    tolerationSeconds:
+                      type: integer
+                      description: "Время в секундах (для NoExecute)"
+            required:
+            - image
+          status:
+            type: object
+            x-kubernetes-preserve-unknown-fields: true
+  scope: Namespaced
+  names:
+    plural: ocellusai
+    singular: ocellusai
+    kind: OcellusAI
+    shortNames:
+    - ocai

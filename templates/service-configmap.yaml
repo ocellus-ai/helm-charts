@@ -1,0 +1,15 @@
+{{- if .Values.service.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ocellusai-config
+  namespace: {{ include "ocellusai.namespace" . }}
+data:
+  # Development Settings
+  DEV_MODE: {{ .Values.service.devMode | quote }}
+  
+  # AI Configuration
+  MODEL_NAME: {{ .Values.service.modelName | quote }}
+  BASE_URL: {{ .Values.service.baseUrl | quote }}
+  
+{{- end }}

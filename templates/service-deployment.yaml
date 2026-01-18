@@ -1,0 +1,34 @@
+{{- if .Values.service.enabled }}
+---
+apiVersion: ocellusai.com/v1
+kind: OcellusAI
+metadata:
+  name: {{ include "ocellusai.fullname" . }}-service
+  namespace: {{ include "ocellusai.namespace" . }}
+spec:
+  type: deployment
+  image: "{{ .Values.service.image.repository }}:{{ .Values.service.image.tag }}"
+  replicas: {{ .Values.service.replicas }}
+  port: {{ .Values.service.port }}
+  
+  # Используем envFrom для импорта всех переменных сразу
+  envFrom:
+  - secretRef:
+      name: ocellusai-secrets
+  - configMapRef:
+      name: ocellusai-config
+  
+  {{- with .Values.service.tolerations }}
+  # Tolerations для размещения на специфичных нодах
+  tolerations:
+    {{- toYaml . | nindent 2 }}
+  {{- end }}
+  
+  {{- with .Values.service.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  
+  resources:
+    {{- toYaml .Values.service.resources | nindent 4 }}
+{{- end }}

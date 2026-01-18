@@ -1,0 +1,29 @@
+{{- if .Values.operator.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ocellusai.fullname" . }}-operator
+  namespace: {{ include "ocellusai.namespace" . }}
+  labels:
+    app: {{ include "ocellusai.fullname" . }}-operator
+spec:
+  replicas: {{ .Values.operator.replicas }}
+  selector:
+    matchLabels:
+      app: {{ include "ocellusai.fullname" . }}-operator
+  template:
+    metadata:
+      labels:
+        app: {{ include "ocellusai.fullname" . }}-operator
+    spec:
+      serviceAccountName: {{ include "ocellusai.serviceAccountName" . }}
+      containers:
+      - name: operator
+        image: "{{ .Values.operator.image.repository }}:{{ .Values.operator.image.tag }}"
+        imagePullPolicy: {{ .Values.operator.image.pullPolicy }}
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        resources:
+          {{- toYaml .Values.operator.resources | nindent 10 }}
+{{- end }}

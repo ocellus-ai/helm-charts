@@ -1,0 +1,96 @@
+# Default values for ocellusai.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Namespace where resources will be deployed
+namespaceOverride: ""
+
+## Operator configuration
+operator:
+  enabled: true
+
+  image:
+    repository: quay.io/ocellusai/operator
+    tag: v0.10.1
+    pullPolicy: IfNotPresent
+
+  replicas: 1
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  # ServiceAccount configuration
+  serviceAccount:
+    create: true
+    name: ocellusai-operator
+
+  # RBAC configuration
+  rbac:
+    create: true
+
+## CRD installation
+crd:
+  # Install CRD as part of the chart
+  install: true
+
+## Web Service Deployment configuration
+service:
+  enabled: true
+
+  image:
+    repository: nexus.dmp.tele2.kz/mlops-images/python-mlops-service
+    tag: v0.1.20
+    pullPolicy: IfNotPresent
+
+  replicas: 1
+  port: 8080
+
+  resources:
+    requests:
+      cpu: "1"
+      memory: "1Gi"
+    limits:
+      cpu: "4"
+      memory: "4Gi"
+
+  # Node affinity
+  nodeSelector: {}
+
+  # Tolerations for node taints
+  tolerations:
+    - key: "dedicated"
+      operator: "Equal"
+      value: "de"
+      effect: "NoSchedule"
+
+  # API configuration
+  apiKey: "your-api-key-here"
+
+  # Development mode
+  devMode: "false"
+
+  # Model configuration
+  modelName: "model-name-here"
+  baseUrl: "api-model-baseUrl-here"
+
+  # Kubernetes Service
+  k8sService:
+    type: ClusterIP
+    port: 80
+    targetPort: 8080
+    sessionAffinity: ClientIP
+    sessionAffinityTimeout: 10800
+
+  # Ingress configuration
+  ingress:
+    enabled: false
+    className: "className"
+    host: "domain.com"
+    path: /
+    pathType: Prefix
+    tls: []
