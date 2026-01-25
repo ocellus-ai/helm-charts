@@ -33,6 +33,10 @@ See [values.yaml](values.yaml) for all available configuration options.
 - `service.modelName` - AI model name
 - `service.baseUrl` - AI service base URL
 - `service.apiKey` - API key for authentication
+- `service.metricServerUrl` - Prometheus server URL for metrics collection
+- `service.jobName` - Job name for metrics identification
+- `service.costPerCPU` - Cost per CPU unit (default: 0.031)
+- `service.costPerMEM` - Cost per memory unit (default: 0.004)
 - `service.ingress.enabled` - Enable ingress
 - `service.ingress.host` - Ingress hostname
 
@@ -45,6 +49,8 @@ helm upgrade -i ocellusai ./helm/ocellusai \
   --set service.apiKey="your-api-key" \
   --set service.modelName="gpt-4.1" \
   --set service.baseUrl="https://your-ai-service.com/v1/" \
+  --set service.metricServerUrl="http://prometheus-server.monitoring.svc.cluster.local" \
+  --set service.jobName="ocellusai" \
   -n monitoring
 ```
 

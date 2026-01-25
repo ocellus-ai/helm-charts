@@ -52,11 +52,11 @@ service:
 
   resources:
     requests:
-      cpu: "1"
+      cpu: "2"
       memory: "1Gi"
     limits:
-      cpu: "4"
-      memory: "4Gi"
+      cpu: "2"
+      memory: "1Gi"
 
   # Node affinity
   nodeSelector: {}
@@ -71,12 +71,18 @@ service:
   # API configuration
   apiKey: "your-api-key-here"
 
-  # Development mode
-  devMode: "false"
-
   # Model configuration
   modelName: "model-name-here"
   baseUrl: "api-model-baseUrl-here"
+
+  # Metrics configuration
+  metricServerUrl: "http://prometheus-server.monitoring.svc.cluster.local"
+  jobName: "ocellusai"
+  
+  # Cost Configuration
+  # Optional Parameters - By default values are year average costs of CPU and memory across public cloud providers
+  costPerCPU: "120.0"
+  costPerMEM: "36.0"
 
   # Kubernetes Service
   k8sService:
