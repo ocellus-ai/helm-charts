@@ -80,7 +80,7 @@ service:
   jobName: "ocellusai"
   
   # Cost Configuration
-  # Optional Parameters - By default values are year average costs of CPU and memory across public cloud providers
+  # Optional parameters - Default values represent average annual costs per 1 CPU core and 1GB memory across major public cloud providers (cost per year)
   costPerCPU: "120.0"
   costPerMEM: "36.0"
 
