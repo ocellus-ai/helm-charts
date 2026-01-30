@@ -1,0 +1,156 @@
+{{- if .Values.operator.enabled }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "ocellusai.fullname" . }}-cleanup
+  namespace: {{ include "ocellusai.namespace" . }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-10"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "ocellusai.fullname" . }}-cleanup
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-10"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+rules:
+- apiGroups: ["ocellusai.com"]
+  resources: ["ocellusai"]
+  verbs: ["get", "list", "delete", "patch", "update"]
+- apiGroups: ["ocellusai.com"]
+  resources: ["ocellusai/status"]
+  verbs: ["get", "update", "patch"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "delete"]
+- apiGroups: ["batch"]
+  resources: ["cronjobs", "jobs"]
+  verbs: ["get", "list", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "ocellusai.fullname" . }}-cleanup
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-10"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "ocellusai.fullname" . }}-cleanup
+subjects:
+- kind: ServiceAccount
+  name: {{ include "ocellusai.fullname" . }}-cleanup
+  namespace: {{ include "ocellusai.namespace" . }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "ocellusai.fullname" . }}-cleanup
+  namespace: {{ include "ocellusai.namespace" . }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+  labels:
+    app: {{ include "ocellusai.fullname" . }}-cleanup
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 3
+  template:
+    metadata:
+      name: {{ include "ocellusai.fullname" . }}-cleanup
+      labels:
+        app: {{ include "ocellusai.fullname" . }}-cleanup
+    spec:
+      serviceAccountName: {{ include "ocellusai.fullname" . }}-cleanup
+      restartPolicy: OnFailure
+      containers:
+      - name: cleanup
+        image: bitnami/kubectl:latest
+        imagePullPolicy: IfNotPresent
+        command:
+        - /bin/bash
+        - -c
+        - |
+          set -e
+          
+          echo "🧹 Starting cleanup of OcellusAI custom resources..."
+          
+          # Получаем список всех OcellusAI ресурсов
+          RESOURCES=$(kubectl get ocellusai.ocellusai.com -n {{ include "ocellusai.namespace" . }} -o name 2>/dev/null || true)
+          
+          if [ -z "$RESOURCES" ]; then
+            echo "ℹ️  No OcellusAI resources found. Nothing to clean up."
+            exit 0
+          fi
+          
+          echo "📋 Found OcellusAI resources:"
+          echo "$RESOURCES"
+          
+          # Для каждого ресурса
+          for RESOURCE in $RESOURCES; do
+            RESOURCE_NAME=$(echo $RESOURCE | cut -d'/' -f2)
+            echo ""
+            echo "🔧 Processing: $RESOURCE_NAME"
+            
+            # Проверяем есть ли финализер
+            FINALIZERS=$(kubectl get $RESOURCE -n {{ include "ocellusai.namespace" . }} -o jsonpath='{.metadata.finalizers[*]}' 2>/dev/null || true)
+            
+            if [ ! -z "$FINALIZERS" ]; then
+              echo "🗑️  Removing finalizers: $FINALIZERS"
+              
+              # Удаляем все финализеры
+              kubectl patch $RESOURCE -n {{ include "ocellusai.namespace" . }} \
+                --type json \
+                -p='[{"op": "remove", "path": "/metadata/finalizers"}]' 2>/dev/null || true
+              
+              echo "✅ Finalizers removed"
+            fi
+            
+            # Удаляем Deployment если существует
+            if kubectl get deployment ${RESOURCE_NAME}-deployment -n {{ include "ocellusai.namespace" . }} >/dev/null 2>&1; then
+              echo "🗑️  Deleting deployment: ${RESOURCE_NAME}-deployment"
+              kubectl delete deployment ${RESOURCE_NAME}-deployment -n {{ include "ocellusai.namespace" . }} \
+                --grace-period=0 --force 2>/dev/null || true
+              echo "✅ Deployment deleted"
+            fi
+            
+            # Удаляем CronJob если существует
+            if kubectl get cronjob ${RESOURCE_NAME}-cronjob -n {{ include "ocellusai.namespace" . }} >/dev/null 2>&1; then
+              echo "🗑️  Deleting cronjob: ${RESOURCE_NAME}-cronjob"
+              kubectl delete cronjob ${RESOURCE_NAME}-cronjob -n {{ include "ocellusai.namespace" . }} \
+                --grace-period=0 --force 2>/dev/null || true
+              echo "✅ CronJob deleted"
+            fi
+            
+            # Удаляем CR
+            echo "🗑️  Deleting custom resource: $RESOURCE_NAME"
+            kubectl delete $RESOURCE -n {{ include "ocellusai.namespace" . }} \
+              --grace-period=0 --force 2>/dev/null || true
+            echo "✅ Custom resource deleted"
+          done
+          
+          # Ждем пока все ресурсы действительно удалятся
+          echo ""
+          echo "⏳ Waiting for all resources to be cleaned up..."
+          
+          for i in {1..30}; do
+            REMAINING=$(kubectl get ocellusai.ocellusai.com -n {{ include "ocellusai.namespace" . }} 2>/dev/null | grep -v NAME | wc -l || echo "0")
+            if [ "$REMAINING" -eq "0" ]; then
+              echo "✅ All OcellusAI resources cleaned up successfully!"
+              exit 0
+            fi
+            echo "⏳ Still waiting... ($i/30) - $REMAINING resources remaining"
+            sleep 2
+          done
+          
+          echo "⚠️  Warning: Some resources might still be present, but proceeding with cleanup"
+          exit 0
+{{- end }}

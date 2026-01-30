@@ -6,15 +6,15 @@ metadata:
   namespace: {{ include "ocellusai.namespace" . }}
 data:  
   # AI Configuration
-  MODEL_NAME: {{ .Values.service.modelName | quote }}
-  BASE_URL: {{ .Values.service.baseUrl | quote }}
+  modelName: {{ .Values.service.modelName | quote }}
+  baseUrl: {{ .Values.service.baseUrl | quote }}
   
   # Metrics Configuration
-  METRIC_SERVER_URL: {{ .Values.service.metricServerUrl | quote }}
-  JOB_NAME: {{ .Values.service.jobName | quote }}
+  metricServerUrl: {{ .Values.service.metricServerUrl | quote }}
+  jobName: {{ .Values.service.jobName | quote }}
   
   # Cost Configuration
-  COST_PER_CPU: {{ .Values.service.costPerCPU | quote }}
-  COST_PER_MEM: {{ .Values.service.costPerMEM | quote }}
+  costPerCPU: {{ .Values.service.costPerCPU | quote }}
+  costPerMEM: {{ .Values.service.costPerMEM | quote }}
   
 {{- end }}

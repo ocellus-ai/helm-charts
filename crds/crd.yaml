@@ -3,6 +3,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: ocellusai.ocellusai.com
+  annotations:
+    "helm.sh/resource-policy": keep
 spec:
   group: ocellusai.com
   versions:
@@ -39,40 +41,33 @@ spec:
                 default: 8080
               schedule:
                 type: string
-                description: "Cron расписание (например: '0 */6 * * *')"
-                default: "0 */6 * * *"
+                description: "Cron расписание (например: '0 */6 * * *'). Используется только для type: cronjob"
               suspend:
                 type: boolean
-                description: "Приостановить выполнение CronJob"
-                default: false
+                description: "Приостановить выполнение CronJob. Используется только для type: cronjob"
               concurrencyPolicy:
                 type: string
-                description: "Политика конкурентности (Allow, Forbid, Replace)"
+                description: "Политика конкурентности (Allow, Forbid, Replace). Используется только для type: cronjob"
                 enum: ["Allow", "Forbid", "Replace"]
-                default: "Forbid"
               successfulJobsHistoryLimit:
                 type: integer
-                description: "Количество успешных Job'ов для хранения в истории"
+                description: "Количество успешных Job'ов для хранения в истории. Используется только для type: cronjob"
                 minimum: 0
                 maximum: 10
-                default: 3
               failedJobsHistoryLimit:
                 type: integer
-                description: "Количество неудачных Job'ов для хранения в истории"
+                description: "Количество неудачных Job'ов для хранения в истории. Используется только для type: cronjob"
                 minimum: 0
                 maximum: 10
-                default: 1
               backoffLimit:
                 type: integer
-                description: "Количество попыток при ошибке"
+                description: "Количество попыток при ошибке. Используется только для type: cronjob"
                 minimum: 0
                 maximum: 10
-                default: 3
               ttlSecondsAfterFinished:
                 type: integer
-                description: "Время до удаления Job после завершения (секунды)"
+                description: "Время до удаления Job после завершения (секунды). Используется только для type: cronjob"
                 minimum: 0
-                default: 3600
               env:
                 type: array
                 description: "Переменные окружения для контейнера"
