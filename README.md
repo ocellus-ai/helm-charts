@@ -1,11 +1,10 @@
 # OcellusAI Helm Chart
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/ocellusai)](https://artifacthub.io/packages/helm/ocellusai/ocellusai)
 ![License](https://img.shields.io/badge/License-Proprietary-red)
 ![Chart Version](https://img.shields.io/badge/Chart%20Version-0.1.0-blue)
 ![App Version](https://img.shields.io/badge/App%20Version-v0.1.12-blue)
-![Release](https://img.shields.io/badge/Release-passing-brightgreen)
-![Downloads](https://img.shields.io/github/downloads/ocellus-ai/helm-charts/total?label=downloads)
-[![Helm Chart](https://img.shields.io/badge/Helm-Chart-0f1689?logo=helm)](https://ocellus-ai.github.io/helm-charts/)
+[![Helm Chart](https://img.shields.io/badge/Helm-Chart-0f1689?logo=helm)](https://artifacthub.io/packages/helm/ocellusai/ocellusai)
 
 A Helm chart for OcellusAI Operator - manages serverless AI monitoring service deployments.
 
