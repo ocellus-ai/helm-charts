@@ -12,7 +12,7 @@ A Helm chart for OcellusAI Operator - manages serverless AI monitoring service d
 Install from local directory:
 
 ```bash
-helm upgrade -i ocellusai ./helm/ocellusai -f values.yaml -n monitoring --create-namespace
+helm repo add ocellusai https://ocellus-ai.github.io/helm-charts
 ```
 
 ## Configuration
@@ -21,15 +21,7 @@ See [values.yaml](values.yaml) for all available configuration options.
 
 ### Key Configuration Parameters
 
-#### Operator
-- `operator.image.repository` - Operator image repository
-- `operator.image.tag` - Operator image tag
-- `operator.resources` - Resource requests/limits
-- `operator.serviceAccount.create` - Create ServiceAccount (default: true)
-- `operator.rbac.create` - Create RBAC resources (default: true)
-
 #### Web Service
-- `service.enabled` - Enable web service deployment (default: true)
 - `service.image.repository` - Service image repository
 - `service.image.tag` - Service image tag
 - `service.replicas` - Number of replicas
