@@ -22,11 +22,6 @@ See [values.yaml](values.yaml) for all available configuration options.
 ### Key Configuration Parameters
 
 #### Web Service
-- `service.image.repository` - Service image repository
-- `service.image.tag` - Service image tag
-- `service.replicas` - Number of replicas
-- `service.port` - Service port (default: 8080)
-- `service.resources` - Resource requests/limits
 - `service.modelName` - AI model name
 - `service.baseUrl` - AI service base URL
 - `service.apiKey` - API key for authentication
@@ -34,8 +29,6 @@ See [values.yaml](values.yaml) for all available configuration options.
 - `service.jobName` - Job name for metrics identification
 - `service.costPerCPU` - Cost per CPU unit (default: 0.031)
 - `service.costPerMEM` - Cost per memory unit (default: 0.004)
-- `service.ingress.enabled` - Enable ingress
-- `service.ingress.host` - Ingress hostname
 
 ## Examples
 
