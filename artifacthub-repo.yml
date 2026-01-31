@@ -1,7 +1,0 @@
-# Artifact Hub repository metadata file
-# https://github.com/artifacthub/hub/blob/master/docs/metadata/artifacthub-repo.yml
-repositoryID: c2cf316c-c6bf-4bd9-99e9-5d4a9f4746d6
-owners:
-  - name: OcellusAI Team
-    email: office@ocellusai.com
-
