@@ -1,0 +1,8 @@
+# Keep only Helm repo files
+*.tgz
+artifacthub-repo.yml
+index.yaml
+README.md
+RELEASE.md
+release.sh
+ARTIFACTHUB-SETUP.md
