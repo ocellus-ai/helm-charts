@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   ocellusai:
   - apiVersion: v2
-    appVersion: v0.1.12
-    created: "2026-01-18T16:07:20.766176+05:00"
+    appVersion: v0.1.10
+    created: "2026-01-31T23:21:52.981925+05:00"
     description: A Helm chart for OcellusAI Operator - manages ETL CronJobs and Deployments
       for Prometheus metrics collection
-    digest: a49dd4f3870fe5ff696d232b6f7c493d5012558b0aa0e698b4bad301a5f46b7f
+    digest: b38c7b5588a15dcc2614c6fb376486e1341c4e35972aa9b246bb4c518691d2ad
     keywords:
     - ocellusai
     - prometheus
@@ -16,6 +16,6 @@ entries:
     name: ocellusai
     type: application
     urls:
-    - https://ocellus-ai.github.io/helm-charts/ocellusai-0.1.0.tgz
-    version: 0.1.0
-generated: "2026-01-18T16:07:20.763406+05:00"
+    - https://github.com/ocellus-ai/helm-charts/releases/download/v0.1.10/ocellusai-0.1.10.tgz
+    version: 0.1.10
+generated: "2026-01-31T23:21:52.981135+05:00"
