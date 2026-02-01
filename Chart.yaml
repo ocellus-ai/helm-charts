@@ -8,5 +8,27 @@ keywords:
   - ocellusai
   - prometheus
   - operator
+  - kubernetes
+  - monitoring
+  - ai
+  - helm-charts
+home: https://ocellus-ai.github.io/helm-charts/
+sources:
+  - https://github.com/ocellus-ai/helm-charts
 maintainers:
   - name: OcellusAI Team
+    url: https://ocellus-ai.github.io/helm-charts/
+annotations:
+  artifacthub.io/links: |
+    - name: Chart Repository
+      url: https://ocellus-ai.github.io/helm-charts/
+    - name: Documentation
+      url: https://ocellusai.com/docs/helm
+    - name: GitHub
+      url: https://github.com/ocellus-ai/helm-charts
+  artifacthub.io/changes: |
+    - kind: added
+      description: Initial release of OcellusAI Helm chart
+  artifacthub.io/images: |
+    - name: ocellusai-operator
+      image: ghcr.io/ocellus-ai/ocellusai-operator:v0.1.10
