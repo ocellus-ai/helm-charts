@@ -1,4 +1,4 @@
-# OcellusAI Helm Chart
+# OcellusAI-mini Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/ocellusai)](https://artifacthub.io/packages/search?repo=ocellusai)
 ![License](https://img.shields.io/badge/License-Proprietary-red)
