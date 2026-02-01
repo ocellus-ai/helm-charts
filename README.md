@@ -9,7 +9,9 @@ A Helm chart for OcellusAI Operator - manages serverless AI monitoring service d
 
 ## Installation
 
-Install from local directory:
+For detailed information on how to use OcellusAI Mini, please visit our [official website](https://ocellusai.com/docs/helm).
+
+Or install from local directory:
 
 ```bash
 helm repo add ocellusai https://ocellus-ai.github.io/helm-charts
