@@ -11,7 +11,7 @@ data:
   
   # Metrics Configuration
   metricServerUrl: {{ .Values.service.metricServerUrl | quote }}
-  jobName: {{ .Values.service.jobName | quote }}
+  JobName: {{ .Values.service.jobName | quote }}
   
   # Cost Configuration
   costPerCPU: {{ .Values.service.costPerCPU | quote }}
