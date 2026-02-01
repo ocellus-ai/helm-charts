@@ -54,6 +54,10 @@ helm upgrade -i ocellusai ./helm/ocellusai \
   --set service.ingress.enabled=true \
   --set service.ingress.host="ocellusai.example.com" \
   --set service.apiKey="your-api-key" \
+  --set service.modelName="gpt-4.1" \
+  --set service.baseUrl="https://your-ai-service.com/v1/" \
+  --set service.metricServerUrl="http://prometheus-server.monitoring.svc.cluster.local" \
+  --set service.jobName="ocellusai" \
   -n monitoring
 ```
 
