@@ -1,4 +1,4 @@
-# OcellusAI Helm Chart
+# OcellusAI-mini Helm Chart
 
 [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/ocellusai)](https://artifacthub.io/packages/search?repo=ocellusai)
 ![License](https://img.shields.io/badge/License-Proprietary-red)
@@ -9,7 +9,9 @@ A Helm chart for OcellusAI Operator - manages serverless AI monitoring service d
 
 ## Installation
 
-Install from local directory:
+For detailed information on how to use OcellusAI Mini, please visit our [official website](https://ocellusai.com/docs/helm).
+
+Or install from local directory:
 
 ```bash
 helm repo add ocellusai https://ocellus-ai.github.io/helm-charts
@@ -30,12 +32,14 @@ See [values.yaml](values.yaml) for all available configuration options.
 - `service.costPerCPU` - Cost per CPU unit (default: 0.031)
 - `service.costPerMEM` - Cost per memory unit (default: 0.004)
 
+For detailed information about configuration parameters (`apiKey`, `modelName`, `baseUrl`, `metricServerUrl`, `jobName`), please visit our [official website](https://ocellusai.com/docs/helm).
+
 ## Examples
 
 ### Minimal installation
 
 ```bash
-helm upgrade -i ocellusai ./helm/ocellusai \
+helm install -i ocellusai-mini ocellusai/ocellusai \
   --set service.apiKey="your-api-key" \
   --set service.modelName="gpt-4.1" \
   --set service.baseUrl="https://your-ai-service.com/v1/" \
@@ -47,16 +51,36 @@ helm upgrade -i ocellusai ./helm/ocellusai \
 ### With ingress enabled
 
 ```bash
-helm upgrade -i ocellusai ./helm/ocellusai \
-  --set service.enabled=true \
+helm upgrade -i ocellusai-mini ocellusai/ocellusai \
   --set service.ingress.enabled=true \
+  --set service.ingress.className="ClassName" \
   --set service.ingress.host="ocellusai.example.com" \
   --set service.apiKey="your-api-key" \
+  --set service.modelName="gpt-4.1" \
+  --set service.baseUrl="https://your-ai-service.com/v1/" \
+  --set service.metricServerUrl="http://prometheus-server.monitoring.svc.cluster.local" \
+  --set service.jobName="ocellusai" \
   -n monitoring
+```
+
+**Note:** If you need to use additional ingress annotations (e.g., for Traefik configuration), download the chart and modify the `values.yaml` file:
+
+```bash
+# Download the chart
+helm pull ocellusai/ocellusai --untar
+
+# Edit values.yaml and add your annotations:
+# ingress:
+#   annotations:
+#     traefik.ingress.kubernetes.io/router.entrypoints: web
+#     # Add other annotations as needed
+
+# Install from local directory
+helm upgrade -i ocellusai-mini ./ -f values.yaml -n monitoring
 ```
 
 ## Uninstallation
 
 ```bash
-helm uninstall ocellusai -n monitoring
+helm delete ocellusai-mini -n monitoring
 ```
