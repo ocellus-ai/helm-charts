@@ -44,7 +44,7 @@ service:
 
   image:
     repository: quay.io/ocellusai/ocellusai-mini
-    tag: v0.10.4
+    tag: v0.10.5
     pullPolicy: IfNotPresent
 
   replicas: 1
@@ -62,11 +62,7 @@ service:
   nodeSelector: {}
 
   # Tolerations for node taints
-  tolerations:
-    - key: "dedicated"
-      operator: "Equal"
-      value: "de"
-      effect: "NoSchedule"
+  tolerations: []
 
   # API configuration
   apiKey: "your-api-key-here"

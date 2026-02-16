@@ -2,8 +2,8 @@ apiVersion: v2
 name: ocellusai
 description: A Helm chart for OcellusAI Operator - manages ETL CronJobs and Deployments for Prometheus metrics collection
 type: application
-version: 0.1.10
-appVersion: "v0.1.10"
+version: 0.1.11
+appVersion: "v0.1.11"
 keywords:
   - ocellusai
   - prometheus
@@ -31,4 +31,4 @@ annotations:
       description: Initial release of OcellusAI Helm chart
   artifacthub.io/images: |
     - name: ocellusai-operator
-      image: ghcr.io/ocellus-ai/ocellusai-operator:v0.1.10
+      image: ghcr.io/ocellus-ai/ocellusai-operator:v0.1.11
