@@ -2,7 +2,7 @@ apiVersion: v1
 entries:
   ocellusai:
   - apiVersion: v2
-    appVersion: v0.1.10
+    appVersion: v0.1.11
     created: "2026-01-31T23:21:52.981925+05:00"
     description: A Helm chart for OcellusAI Mini - manages serverless AI monitoring service deployments.
     digest: b38c7b5588a15dcc2614c6fb376486e1341c4e35972aa9b246bb4c518691d2ad
@@ -15,6 +15,6 @@ entries:
     name: ocellusai
     type: application
     urls:
-    - https://github.com/ocellus-ai/helm-charts/releases/download/v0.1.10/ocellusai-0.1.10.tgz
-    version: 0.1.10
+    - https://github.com/ocellus-ai/helm-charts/releases/download/v0.1.11/ocellusai-0.1.11.tgz
+    version: 0.1.11
 generated: "2026-01-31T23:21:52.981135+05:00"
