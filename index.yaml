@@ -18,8 +18,7 @@ entries:
     apiVersion: v2
     appVersion: v0.1.11
     created: "2026-02-16T20:25:41.206421+05:00"
-    description: A Helm chart for OcellusAI Operator - manages ETL CronJobs and Deployments
-      for Prometheus metrics collection
+    description: A Helm chart for OcellusAI - manages serverless AI monitoring service deployments.
     digest: 17fb4b493d1ee824883210d5412d0ac1aa11f1cdd2da587474933105a10f85b5
     home: https://ocellus-ai.github.io/helm-charts/
     keywords:
