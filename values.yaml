@@ -11,7 +11,7 @@ operator:
 
   image:
     repository: quay.io/ocellusai/operator
-    tag: v0.10.4
+    tag: v0.10.5
     pullPolicy: IfNotPresent
 
   replicas: 1
