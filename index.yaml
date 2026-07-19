@@ -3,6 +3,47 @@ entries:
   ocellusai:
   - annotations:
       artifacthub.io/changes: |
+        - kind: changed
+          description: Bump operator image to v0.10.5
+      artifacthub.io/images: |
+        - name: ocellusai-operator
+          image: quay.io/ocellusai/operator:v0.10.5
+        - name: ocellusai-mini
+          image: quay.io/ocellusai/ocellusai-mini:v0.10.5
+      artifacthub.io/links: |
+        - name: Chart Repository
+          url: https://ocellus-ai.github.io/helm-charts/
+        - name: Documentation
+          url: https://ocellusai.com/docs/helm
+        - name: GitHub
+          url: https://github.com/ocellus-ai/helm-charts
+    apiVersion: v2
+    appVersion: v0.10.5
+    created: "2026-07-19T15:21:28.810039+05:00"
+    description: A Helm chart for OcellusAI Operator - manages ETL CronJobs and Deployments
+      for Prometheus metrics collection
+    digest: 6f5b0e8d7b28a424d6c1484c6e50a2ff4c4b590ee3a9b5cb867104480232da9d
+    home: https://ocellus-ai.github.io/helm-charts/
+    keywords:
+    - ocellusai
+    - prometheus
+    - operator
+    - kubernetes
+    - monitoring
+    - ai
+    - helm-charts
+    maintainers:
+    - name: OcellusAI Team
+      url: https://ocellus-ai.github.io/helm-charts/
+    name: ocellusai
+    sources:
+    - https://github.com/ocellus-ai/helm-charts
+    type: application
+    urls:
+    - https://github.com/ocellus-ai/helm-charts/releases/download/v0.1.12/ocellusai-0.1.12.tgz
+    version: 0.1.12
+  - annotations:
+      artifacthub.io/changes: |
         - kind: added
           description: Initial release of OcellusAI Helm chart
       artifacthub.io/images: |
@@ -18,7 +59,8 @@ entries:
     apiVersion: v2
     appVersion: v0.1.11
     created: "2026-02-16T20:25:41.206421+05:00"
-    description: A Helm chart for OcellusAI - manages serverless AI monitoring service deployments.
+    description: A Helm chart for OcellusAI - manages serverless AI monitoring service
+      deployments.
     digest: 17fb4b493d1ee824883210d5412d0ac1aa11f1cdd2da587474933105a10f85b5
     home: https://ocellus-ai.github.io/helm-charts/
     keywords:
@@ -39,4 +81,4 @@ entries:
     urls:
     - https://github.com/ocellus-ai/helm-charts/releases/download/v0.1.11/ocellusai-0.1.11.tgz
     version: 0.1.11
-generated: "2026-02-16T20:25:41.205637+05:00"
+generated: "2026-07-19T15:21:28.806666+05:00"
